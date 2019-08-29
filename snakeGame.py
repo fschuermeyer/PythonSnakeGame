@@ -26,6 +26,7 @@ class snakeGame:
         pygame.display.flip()
         pygame.display.set_caption(title)
 
+
         self.changeScreenColor(dc)
         self.createSquare(self.zoom,"red")
 
@@ -38,7 +39,7 @@ class snakeGame:
         self.snakeList = []
         self.snakeList.append((self.lead_x,self.lead_y))
 
-
+        over = False
         r = True
         clock = pygame.time.Clock()
         x = 0
@@ -54,6 +55,11 @@ class snakeGame:
                 self.createTextCenter("Score: " + str(self.appleScore),(self.getColor("white"),self.getColor("Black")),"RobotoSlab-Regular.ttf",self.zoom,(self.start[0],self.start[1] + 75))
               
                 self.createTextCenter("Press C for Next Game or Q for Exit",(self.getColor("white"),self.getColor("black")),"RobotoSlab-Regular.ttf",self.zoom,(self.start[0],self.start[1] + 150))
+              
+                if over:
+                    self.createTextCenter("Snake Over the Field",(self.getColor("white"),self.getColor("black")),"RobotoSlab-Regular.ttf",int(self.zoom * 0.8),(self.w // 2, self.h // 5))
+             
+              
                 pygame.display.update()
 
                 for event in pygame.event.get():
@@ -94,7 +100,6 @@ class snakeGame:
   
             else:
                 self.screen.fill(self.defaultColor)
-                self.createTextCenter("Score: " + str(self.appleScore),(self.getColor("white"),self.defaultColor),"RobotoSlab-Regular.ttf",self.zoom,(self.start[0],self.start[1] // 4))
                 self.createApple()
                 self.checkForApples()
                 
@@ -103,7 +108,13 @@ class snakeGame:
                     self.snakeList.append((self.lead_x,self.lead_y))
 
 
-                self.buildSnake("black")
+                if self.buildSnake("black",(self.lead_x,self.lead_y)):
+                    l = True
+                    over = True
+
+                self.createTextCenter("Score: " + str(self.appleScore),(self.getColor("white"),self.defaultColor),"RobotoSlab-Regular.ttf",self.zoom,(self.start[0],self.start[1] // 4))
+                
+
                 self.createSquare(self.zoom,"red")
 
 
@@ -164,13 +175,31 @@ class snakeGame:
         pygame.draw.rect(self.screen,c,[self.lead_x,self.lead_y,x,x])
         pygame.display.update()
 
-    def buildSnake(self,color):
+    def buildSnake(self,color,cords):
         c = self.getColor(color)
         s = 0
+        x = False
+
 
         for x in range(0,self.appleScore + 1):
             pygame.draw.rect(self.screen,c,[self.snakeList[::-1][x][0],self.snakeList[::-1][x][1],self.zoom,self.zoom])
 
+        if self.appleScore > 1:
+            x = True
+            newList = list()
+
+            for x in range(0,self.appleScore + 1):
+                newList.append(self.snakeList[::-1][x + 1])
+
+            for pos in newList:
+                if pos[0] == cords[0] and pos[1] == cords[1]:
+                        print(newList)
+                        print(cords)
+
+                        return True
+
+
+        return False
             
 
     def getColor(self,color):
@@ -206,13 +235,15 @@ class snakeGame:
 
     def createApple(self):
 
+        c = self.getRandomColor()
+
         if random.randrange(0,self.diff) == 5 and len(self.apples) < 5:
             cords = self.getRandomCords()
             self.apples.append(cords)
         
         for x in self.apples:
             if self.appleScore > 5 and self.appleScore < 10:
-                pygame.draw.ellipse(self.screen,self.getRandomColor(),(self.addToGrid(x[0]),self.addToGrid(x[1]),self.zoom,self.zoom))
+                pygame.draw.ellipse(self.screen,c,(self.addToGrid(x[0]),self.addToGrid(x[1]),self.zoom,self.zoom))
             else:
                 pygame.draw.ellipse(self.screen,self.getColor("apple"),(self.addToGrid(x[0]),self.addToGrid(x[1]),self.zoom,self.zoom))
 

@@ -13,8 +13,8 @@ zoom  = ratio // 30 # Default Value 10
 fps = 30
 apppleSpawnChance = 40
 
-s = snake(ratio,ratio,title,color,zoom,apppleSpawnChance)
+print(title)
 
-print(s.getRandomCords())
+s = snake(ratio,ratio,title,color,zoom,apppleSpawnChance)
 
 s.gameLoop(fps)
