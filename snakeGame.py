@@ -26,7 +26,6 @@ class snakeGame:
         pygame.display.flip()
         pygame.display.set_caption(title)
 
-
         self.changeScreenColor(dc)
         self.createSquare(self.zoom,"red")
 
@@ -50,7 +49,7 @@ class snakeGame:
 
 
             while l: 
-                self.screen.fill(self.getColor("black"))
+                self.screen.fill(self.defaultColor)
                 self.createTextCenter("Game Over",(self.getColor("white"),self.getColor("black")),"RobotoSlab-Regular.ttf",self.zoom * 4,(self.w // 2, self.h // 2))
                 self.createTextCenter("Score: " + str(self.appleScore),(self.getColor("white"),self.getColor("Black")),"RobotoSlab-Regular.ttf",self.zoom,(self.start[0],self.start[1] + 75))
               
@@ -220,7 +219,7 @@ class snakeGame:
 
     def createTextCenter(self,title,color,f,size,pos):
         font = pygame.font.Font(f,size)
-        text = font.render(title,True,color[0],color[1])
+        text = font.render(title,True,color[0])
         textRect = text.get_rect()
         textRect.center = pos
 
