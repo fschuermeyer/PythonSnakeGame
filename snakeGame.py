@@ -46,20 +46,16 @@ class snakeGame:
         l = False
 
         while r:
-
-
             while l: 
                 self.screen.fill(self.defaultColor)
                 self.createTextCenter("Game Over",(self.getColor("white"),self.getColor("black")),"RobotoSlab-Regular.ttf",self.zoom * 4,(self.w // 2, self.h // 2))
                 self.createTextCenter("Score: " + str(self.appleScore),(self.getColor("white"),self.getColor("Black")),"RobotoSlab-Regular.ttf",self.zoom,(self.start[0],self.start[1] + 75))
-              
                 self.createTextCenter("Press C for Next Game or Q for Exit",(self.getColor("white"),self.getColor("black")),"RobotoSlab-Regular.ttf",self.zoom,(self.start[0],self.start[1] + 150))
               
                 if over:
                     self.createTextCenter("Snake Over the Field",(self.getColor("white"),self.getColor("black")),"RobotoSlab-Regular.ttf",int(self.zoom * 0.8),(self.w // 2, self.h // 5))
              
-              
-                pygame.display.update()
+                
 
                 for event in pygame.event.get():
                     if event.type == pygame.KEYDOWN:
@@ -68,6 +64,8 @@ class snakeGame:
                         
                         if event.key == pygame.K_c:
                             self.gameLoop(fps)
+
+                pygame.display.update()
 
             for event in pygame.event.get():
                 if event.type == pygame.KEYDOWN:
@@ -118,6 +116,7 @@ class snakeGame:
 
 
             clock.tick(fps)
+            pygame.display.update()
                 
 
         
@@ -166,19 +165,16 @@ class snakeGame:
     def changeScreenColor(self,color):
         c = self.getColor(color)
         
-        self.screen.fill(c)
-        pygame.display.update()
+        self.screen.fill(c) 
 
     def createSquare(self,x,color):
         c = self.getColor(color)
         pygame.draw.rect(self.screen,c,[self.lead_x,self.lead_y,x,x])
-        pygame.display.update()
 
     def buildSnake(self,color,cords):
         c = self.getColor(color)
         s = 0
         x = False
-
 
         for x in range(0,self.appleScore + 1):
             pygame.draw.rect(self.screen,c,[self.snakeList[::-1][x][0],self.snakeList[::-1][x][1],self.zoom,self.zoom])
@@ -246,7 +242,6 @@ class snakeGame:
             else:
                 pygame.draw.ellipse(self.screen,self.getColor("apple"),(self.addToGrid(x[0]),self.addToGrid(x[1]),self.zoom,self.zoom))
 
-        pygame.display.update()
 
     def addToGrid(self,x):
         return round(x/self.zoom)*self.zoom
